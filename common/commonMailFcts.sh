@@ -9,11 +9,12 @@
 #	   from a pipe
 ####################################################################
 sendMail() {
-	local host subject body line
+	local host subject rfcdate body line
 	
 	# Initialize variables
 	host=`$BIN_HOSTNAME -s`
 	subject="$1"
+	rfcdate=`date "+%a, %d %b %Y %H:%M:%S %z"`
 	body=""
 
 	# If the mail body is provided though the pipe
@@ -29,7 +30,7 @@ sendMail() {
 	fi	
 
 	# Send the mail
-	$BIN_PRINTF "From: $CFG_MAIL_FROM\nTo: $CFG_MAIL_TO\nSubject: $subject\n\n$body" | $BIN_MSMTP --file=$CFG_MSMTP_CONF -t
+	$BIN_PRINTF "From: $CFG_MAIL_FROM\nTo: $CFG_MAIL_TO\nSubject: $subject\nDate: $rfcdate\n\n$body" | $BIN_MSMTP --file=$CFG_MSMTP_CONF -t
 
 	return 0
 }
